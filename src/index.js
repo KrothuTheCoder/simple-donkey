@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
 const appInsights = new ApplicationInsights({ config: {
-  connectionString: 'InstrumentationKey=6bd44586-aeec-47ae-9056-0019ea08f8f9;IngestionEndpoint=https://centralus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+  connectionString: 'InstrumentationKey=7ad782dd-9403-4ff6-ac91-eb50370ccbe1;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/'
   ,enableAutoRouteTracking: true
 } });
 appInsights.loadAppInsights();

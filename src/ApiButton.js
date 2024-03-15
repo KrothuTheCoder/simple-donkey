@@ -6,13 +6,12 @@ const ApiButton = () => {
 
     const handleApiCall = async () => {
         try {
-            const url = 'https://api.hakabo.com/api/data'; // Replace with your API endpoint
+            const url = 'https://api.hakabo.com/api/arc/v1/something/dosomething'; // Replace with your API endpoint
             const headers = {
-                'Content-Type': 'application/json',
-                'Ocp-Apim-Subscription-Key': '1193b86901a44fa181cb016bfd85089f', 
+                'Ocp-Apim-Subscription-Key': '397eadcd9f5a4944a73f4dd48125d1ae', 
             };
 
-            const response = await fetch(url, { method: 'GET', headers });
+            const response = await fetch(url, {mode:'cors', method: 'GET', headers });
             if (!response.ok) {
                 throw new Error('API request failed');
             }
@@ -31,8 +30,7 @@ const ApiButton = () => {
             {apiResult && (
                 <div>
                     {/* Render API result */}
-                    <p>Message: {apiResult.message}</p>
-                    <p>Validity: {apiResult.validity}</p>
+                    <p>Message: {apiResult.key}</p>
                 </div>
             )}
         </div>

@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/9d8b2b88-19c2-4c28-afc2-aa772b73166c/resourceGroups/apim-static-page/providers/Microsoft.Web/sites/ui-ipa-sandbox",
+    "appService.deploySubpath": "."
+}
