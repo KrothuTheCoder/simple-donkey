@@ -14,7 +14,7 @@ function App() {
           Daddy cried<br/>
           Inky Pinky Ponky<br/>
         </p>
-        <p>v1.2</p>
+        <p>v1.13</p>
         <ApiButton />
       </header>
     </div>

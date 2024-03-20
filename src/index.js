@@ -11,7 +11,8 @@ const appInsights = new ApplicationInsights({ config: {
   ,enableAutoRouteTracking: true
 } });
 appInsights.loadAppInsights();
-appInsights.trackPageView(); 
+appInsights.trackPageView();
+//appInsights.trackDependencyData(); 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
