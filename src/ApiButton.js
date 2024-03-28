@@ -1,26 +1,52 @@
 // ApiButton.js
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+//import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import React, { useEffect, useState } from 'react';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { ReactPlugin, withAITracking } from '@microsoft/applicationinsights-react-js';
+import { createBrowserHistory } from "history";
+
+const browserHistory = createBrowserHistory({ basename: '' });
+var reactPlugin = new ReactPlugin();
+const appInsights = new ApplicationInsights({
+    config: {
+        connectionString: 'InstrumentationKey=7ad782dd-9403-4ff6-ac91-eb50370ccbe1;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/',
+        extensions: [reactPlugin],
+        extensionConfig: {
+          [reactPlugin.identifier]: { history: browserHistory }
+        }
+    }
+});
+appInsights.loadAppInsights();
 
 function ApiButton () {
 
     const [apiResult, setApiResult] = useState(null); 
     
-    const appInsights = new ApplicationInsights({config:{
-                connectionString: 'InstrumentationKey=7ad782dd-9403-4ff6-ac91-eb50370ccbe1;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/'
-            }});
-    appInsights.loadAppInsights();
-   
 
     const fetchData = async () => {
-        
-        const url = 'https://api.hakabo.com/arc/dev/v1/Something/DoSomething'; // Replace with your API endpoint
+        const traceparent = `00-${generateRandomHex(16)}-${generateRandomHex(8)}-01`;
+                
+         const url = 'https://api.hakabo.com/arc/dev/v1/Something/DoSomething'; // Replace with your API endpoint
         const headers = {
-            'Ocp-Apim-Subscription-Key': '397eadcd9f5a4944a73f4dd48125d1ae', 
+            'Ocp-Apim-Subscription-Key': 'c2d941651361491f95f71aecf591e3e0',
+            'traceparent': traceparent
         };
-        appInsights.startTrackPage(url);
+        //appInsights.startTrackPage(url);
         try {
+            //const startTime = Date.now();
             const response = await fetch(url, {mode:'cors', method: 'GET', headers });
+            //const endTime = Date.now();
+            //const duration = endTime - startTime;
+
+            // appInsights.trackDependencyData({
+            //     id: "FetchData",
+            //     target: url,
+            //     name: "Fetch Data",
+            //     duration,
+            //     success: response.ok,
+            //     resultCode: response.status
+            // });
+
             if (!response.ok) {
                 throw new Error('API request failed');
             }
@@ -28,12 +54,12 @@ function ApiButton () {
             const data = await response.json();
             setApiResult(data); 
             console.log('API response:', data);
-            appInsights.trackTrace({message: 'API Call successful',severityLevel: 0});
+           // appInsights.trackTrace({message: 'API Call successful',severityLevel: 0});
         } catch (error) {
             console.error('Error making API request:', error);
-            appInsights.trackException({exception: error});
+            //appInsights.trackException({exception: error});
         } finally {
-            appInsights.stopTrackPage(url);
+            //appInsights.stopTrackPage(url);
         }
 
     };
@@ -52,4 +78,13 @@ function ApiButton () {
     );
 };
 
-export default ApiButton;
+const generateRandomHex = (length) => {
+    let result = '';
+    const characters = '0123456789abcdef';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+};
+
+export default withAITracking(reactPlugin, ApiButton);

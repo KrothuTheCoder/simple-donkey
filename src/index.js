@@ -4,15 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { ApplicationInsights } from '@microsoft/applicationinsights-web'
+// import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+// import { ReactPlugin, withAITracking } from '@microsoft/applicationinsights-react-js';
 
-const appInsights = new ApplicationInsights({ config: {
-  connectionString: 'InstrumentationKey=7ad782dd-9403-4ff6-ac91-eb50370ccbe1;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/'
-  ,enableAutoRouteTracking: true
-} });
-appInsights.loadAppInsights();
-appInsights.trackPageView();
-//appInsights.trackDependencyData(); 
+// var reactPlugin = new ReactPlugin();
+// const appInsights = new ApplicationInsights({ config: {
+//   connectionString: 'InstrumentationKey=7ad782dd-9403-4ff6-ac91-eb50370ccbe1;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/'
+//   , enableAutoRouteTracking: true,
+//   extensions: [reactPlugin],
+//   extensionConfig: {
+//     [reactPlugin.identifier]: { history: browserHistory }
+//   }
+// } });
+// appInsights.loadAppInsights();
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
