@@ -13,10 +13,19 @@ const appInsights = new ApplicationInsights({
         extensions: [reactPlugin],
         extensionConfig: {
           [reactPlugin.identifier]: { history: browserHistory }
-        }
+        } ,
+        //enableCorsCorrelation: true,
+        enableRequestHeaderTracking: true,
+        enableResponseHeaderTracking: true,
     }
 });
 appInsights.loadAppInsights();
+appInsights.addTelemetryInitializer(envelope => {
+    envelope.tags["ai.cloud.role"] = "DonkeyWeb";
+    envelope.tags["ai.cloud.roleInstance"] = "DonkeyWeb"
+});
+
+
 
 function ApiButton () {
 
@@ -31,21 +40,24 @@ function ApiButton () {
             'Ocp-Apim-Subscription-Key': 'c2d941651361491f95f71aecf591e3e0',
             'traceparent': traceparent
         };
-        //appInsights.startTrackPage(url);
+        appInsights.startTrackPage(url);
         try {
-            //const startTime = Date.now();
+            const startTime = Date.now();
             const response = await fetch(url, {mode:'cors', method: 'GET', headers });
-            //const endTime = Date.now();
-            //const duration = endTime - startTime;
+            //const traceparent = response.headers.get('traceparent');
+            const endTime = Date.now();
+            const duration = endTime - startTime;
 
-            // appInsights.trackDependencyData({
-            //     id: "FetchData",
-            //     target: url,
-            //     name: "Fetch Data",
-            //     duration,
-            //     success: response.ok,
-            //     resultCode: response.status
-            // });
+            appInsights.trackDependencyData({
+                id: "FetchData",
+                target: url,
+                name: "Fetch Data",
+                duration,
+                success: response.ok,
+                resultCode: response.status,
+                dependencyTypeName: "GetSomething",
+                properties: {traceparent,traceparent}
+            });
 
             if (!response.ok) {
                 throw new Error('API request failed');
